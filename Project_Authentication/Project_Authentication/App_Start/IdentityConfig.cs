@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
+using System.Configuration;
+using Twilio;
 using Project_Authentication.Models;
 
 namespace Project_Authentication
@@ -27,7 +25,14 @@ namespace Project_Authentication
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your SMS service here to send a text message.
+            var Twilio = new TwilioRestClient(
+            ConfigurationManager.AppSettings["ACf728d5a9c4348808ae48f2d8b27da4d9"],
+            ConfigurationManager.AppSettings["fd29d0473014ee79d1fa699495c36436"]
+            );
+
+            TwilioRestClient client = new TwilioRestClient("ACf728d5a9c4348808ae48f2d8b27da4d9", "fd29d0473014ee79d1fa699495c36436");
+
+            client.SendMessage("+447445868270", message.Destination, message.Body);
             return Task.FromResult(0);
         }
     }
